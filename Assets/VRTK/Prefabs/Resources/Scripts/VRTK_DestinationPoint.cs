@@ -69,9 +69,15 @@ namespace VRTK
             ResetPoint();
         }
 
+        protected virtual void Awake()
+        {
+            VRTK_SDKManager.instance.AddBehaviourToToggleOnLoadedSetupChange(this);
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();
+
             CreateColliderIfRequired();
             SetupRigidbody();
             initaliseListeners = StartCoroutine(ManageDestinationMarkersAtEndOfFrame());
@@ -86,6 +92,7 @@ namespace VRTK
         protected override void OnDisable()
         {
             base.OnDisable();
+
             if (initaliseListeners != null)
             {
                 StopCoroutine(initaliseListeners);
@@ -105,6 +112,11 @@ namespace VRTK
             {
                 Destroy(pointRigidbody);
             }
+        }
+
+        protected virtual void OnDestroy()
+        {
+            VRTK_SDKManager.instance.RemoveBehaviourToToggleOnLoadedSetupChange(this);
         }
 
         protected virtual void Update()

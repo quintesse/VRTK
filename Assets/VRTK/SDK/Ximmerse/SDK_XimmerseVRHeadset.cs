@@ -12,6 +12,7 @@ namespace VRTK
     /// The XimmerseVR Headset SDK script provides a bridge to the XimmerseVR SDK.
     /// </summary>
     [SDK_Description(typeof(SDK_XimmerseVRSystem))]
+    [SDK_Description(typeof(SDK_XimmerseVRSystem), 1)]
     public class SDK_XimmerseVRHeadset
 #if VRTK_DEFINE_SDK_XIMMERSEVR
         : SDK_BaseHeadset

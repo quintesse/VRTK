@@ -449,9 +449,9 @@
 
         public static SDK_BaseSystem GetSystemSDK()
         {
-            if (VRTK_SDKManager.instance != null)
+            if (VRTK_SDKManager.instance != null && VRTK_SDKManager.instance.loadedSetup != null)
             {
-                return VRTK_SDKManager.instance.GetSystemSDK();
+                return VRTK_SDKManager.instance.loadedSetup.systemSDK;
             }
             if (systemSDK == null)
             {
@@ -462,9 +462,9 @@
 
         public static SDK_BaseHeadset GetHeadsetSDK()
         {
-            if (VRTK_SDKManager.instance != null)
+            if (VRTK_SDKManager.instance != null && VRTK_SDKManager.instance.loadedSetup != null)
             {
-                return VRTK_SDKManager.instance.GetHeadsetSDK();
+                return VRTK_SDKManager.instance.loadedSetup.headsetSDK;
             }
             if (headsetSDK == null)
             {
@@ -475,9 +475,9 @@
 
         public static SDK_BaseController GetControllerSDK()
         {
-            if (VRTK_SDKManager.instance != null)
+            if (VRTK_SDKManager.instance != null && VRTK_SDKManager.instance.loadedSetup != null)
             {
-                return VRTK_SDKManager.instance.GetControllerSDK();
+                return VRTK_SDKManager.instance.loadedSetup.controllerSDK;
             }
             if (controllerSDK == null)
             {
@@ -488,9 +488,9 @@
 
         public static SDK_BaseBoundaries GetBoundariesSDK()
         {
-            if (VRTK_SDKManager.instance != null)
+            if (VRTK_SDKManager.instance != null && VRTK_SDKManager.instance.loadedSetup != null)
             {
-                return VRTK_SDKManager.instance.GetBoundariesSDK();
+                return VRTK_SDKManager.instance.loadedSetup.boundariesSDK;
             }
             if (boundariesSDK == null)
             {

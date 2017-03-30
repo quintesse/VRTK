@@ -41,7 +41,12 @@ namespace VRTK
         protected Vector3 initialPosition;
         protected Quaternion initialRotation;
 
-        protected virtual void Start()
+        protected virtual void Awake()
+        {
+            VRTK_SDKManager.instance.AddBehaviourToToggleOnLoadedSetupChange(this);
+        }
+
+        protected virtual void OnEnable()
         {
             // don't run in builds outside the editor
             if (onlyInEditor && !Application.isEditor)
@@ -67,6 +72,11 @@ namespace VRTK
 
             initialPosition = playArea.position;
             initialRotation = playArea.rotation;
+        }
+
+        protected virtual void OnDestroy()
+        {
+            VRTK_SDKManager.instance.RemoveBehaviourToToggleOnLoadedSetupChange(this);
         }
 
         protected virtual void Update()

@@ -550,7 +550,7 @@ namespace VRTK
             var sdkManager = VRTK_SDKManager.instance;
             if (sdkManager != null)
             {
-                return (actual ? sdkManager.actualLeftController : sdkManager.scriptAliasLeftController);
+                return (actual ? sdkManager.loadedSetup.actualLeftController : sdkManager.scriptAliasLeftController);
             }
             return null;
         }
@@ -560,7 +560,7 @@ namespace VRTK
             var sdkManager = VRTK_SDKManager.instance;
             if (sdkManager != null)
             {
-                return (actual ? sdkManager.actualRightController : sdkManager.scriptAliasRightController);
+                return (actual ? sdkManager.loadedSetup.actualRightController : sdkManager.scriptAliasRightController);
             }
             return null;
         }
@@ -580,7 +580,7 @@ namespace VRTK
             var sdkManager = VRTK_SDKManager.instance;
             if (sdkManager != null && controller)
             {
-                return (actual ? controller.Equals(sdkManager.actualLeftController) : controller.Equals(sdkManager.scriptAliasLeftController));
+                return (actual ? controller.Equals(sdkManager.loadedSetup.actualLeftController) : controller.Equals(sdkManager.scriptAliasLeftController));
             }
             return false;
         }
@@ -590,7 +590,7 @@ namespace VRTK
             var sdkManager = VRTK_SDKManager.instance;
             if (sdkManager != null && controller)
             {
-                return (actual ? controller.Equals(sdkManager.actualRightController) : controller.Equals(sdkManager.scriptAliasRightController));
+                return (actual ? controller.Equals(sdkManager.loadedSetup.actualRightController) : controller.Equals(sdkManager.scriptAliasRightController));
             }
             return false;
         }
@@ -608,9 +608,9 @@ namespace VRTK
                 switch (hand)
                 {
                     case ControllerHand.Left:
-                        return sdkManager.modelAliasLeftController;
+                        return sdkManager.loadedSetup.modelAliasLeftController;
                     case ControllerHand.Right:
-                        return sdkManager.modelAliasRightController;
+                        return sdkManager.loadedSetup.modelAliasRightController;
                 }
             }
             return null;
@@ -624,11 +624,11 @@ namespace VRTK
             {
                 if (IsControllerLeftHand(controller))
                 {
-                    returnController = sdkManager.actualLeftController;
+                    returnController = sdkManager.loadedSetup.actualLeftController;
                 }
                 else if (IsControllerRightHand(controller))
                 {
-                    returnController = sdkManager.actualRightController;
+                    returnController = sdkManager.loadedSetup.actualRightController;
                 }
             }
             return returnController;

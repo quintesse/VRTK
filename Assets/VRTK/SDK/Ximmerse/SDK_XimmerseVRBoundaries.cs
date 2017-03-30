@@ -9,6 +9,7 @@ namespace VRTK
     /// The XimmerseVR Boundaries SDK script provides a bridge to the XimmerseVR SDK play area.
     /// </summary>
     [SDK_Description(typeof(SDK_XimmerseVRSystem))]
+    [SDK_Description(typeof(SDK_XimmerseVRSystem), 1)]
     public class SDK_XimmerseVRBoundaries
 #if VRTK_DEFINE_SDK_XIMMERSEVR
         : SDK_BaseBoundaries

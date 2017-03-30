@@ -123,6 +123,11 @@
             Log(LogLevels.Fatal, message);
         }
 
+        public static void Fatal(Exception exception)
+        {
+            Log(LogLevels.Fatal, exception.Message);
+        }
+
         public static void Log(LogLevels level, string message)
         {
 #if VRTK_NO_LOGGING

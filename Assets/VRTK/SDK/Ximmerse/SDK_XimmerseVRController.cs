@@ -12,6 +12,7 @@ namespace VRTK
     /// The XimmerseVR Controller SDK script provides a bridge to SDK methods that deal with the input devices.
     /// </summary>
     [SDK_Description(typeof(SDK_XimmerseVRSystem))]
+    [SDK_Description(typeof(SDK_XimmerseVRSystem), 1)]
     public class SDK_XimmerseVRController
 #if VRTK_DEFINE_SDK_XIMMERSEVR
         : SDK_BaseController
@@ -155,12 +156,12 @@ namespace VRTK
             {
                 if (cachedLeftTrackedObject != null && (uint)cachedLeftTrackedObject.controllerInput.handle == index)
                 {
-                    return (actual ? sdkManager.actualLeftController : sdkManager.scriptAliasLeftController);
+                    return (actual ? sdkManager.loadedSetup.actualLeftController : sdkManager.scriptAliasLeftController);
                 }
 
                 if (cachedRightTrackedObject != null && (uint)cachedRightTrackedObject.controllerInput.handle == index)
                 {
-                    return (actual ? sdkManager.actualRightController : sdkManager.scriptAliasRightController);
+                    return (actual ? sdkManager.loadedSetup.actualRightController : sdkManager.scriptAliasRightController);
                 }
             }
             return null;
@@ -927,13 +928,13 @@ namespace VRTK
             var sdkManager = VRTK_SDKManager.instance;
             if (sdkManager != null)
             {
-                if (cachedLeftTrackedObject == null && sdkManager.actualLeftController)
+                if (cachedLeftTrackedObject == null && sdkManager.loadedSetup.actualLeftController)
                 {
-                    cachedLeftTrackedObject = sdkManager.actualLeftController.GetComponent<TrackedObject>();
+                    cachedLeftTrackedObject = sdkManager.loadedSetup.actualLeftController.GetComponent<TrackedObject>();
                 }
-                if (cachedRightTrackedObject == null && sdkManager.actualRightController)
+                if (cachedRightTrackedObject == null && sdkManager.loadedSetup.actualRightController)
                 {
-                    cachedRightTrackedObject = sdkManager.actualRightController.GetComponent<TrackedObject>();
+                    cachedRightTrackedObject = sdkManager.loadedSetup.actualRightController.GetComponent<TrackedObject>();
                 }
             }
         }

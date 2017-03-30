@@ -75,6 +75,7 @@ namespace VRTK
         protected int grabEnabledState = 0;
         protected float grabPrecognitionTimer = 0f;
         protected GameObject undroppableGrabbedObject;
+        protected Rigidbody originalControllerAttachPoint;
 
         public virtual void OnControllerGrabInteractableObject(ObjectInteractEventArgs e)
         {
@@ -143,8 +144,9 @@ namespace VRTK
             return grabbedObject;
         }
 
-        protected virtual void OnEnable()
+        protected virtual void Awake()
         {
+            originalControllerAttachPoint = controllerAttachPoint;
             controllerEvents = (controllerEvents != null ? controllerEvents : GetComponentInParent<VRTK_ControllerEvents>());
             interactTouch = (interactTouch != null ? interactTouch : GetComponentInParent<VRTK_InteractTouch>());
 
@@ -152,7 +154,11 @@ namespace VRTK
             {
                 VRTK_Logger.Error(VRTK_Logger.GetCommonMessage(VRTK_Logger.CommonMessageKeys.REQUIRED_COMPONENT_MISSING_NOT_INJECTED, "VRTK_InteractGrab", "VRTK_InteractTouch", "interactTouch", "the same or parent"));
             }
+            VRTK_SDKManager.instance.AddBehaviourToToggleOnLoadedSetupChange(this);
+        }
 
+        protected virtual void OnEnable()
+        {
             RegrabUndroppableObject();
             ManageGrabListener(true);
             ManageInteractTouchListener(true);
@@ -165,6 +171,11 @@ namespace VRTK
             ForceRelease();
             ManageGrabListener(false);
             ManageInteractTouchListener(false);
+        }
+
+        protected virtual void OnDestroy()
+        {
+            VRTK_SDKManager.instance.RemoveBehaviourToToggleOnLoadedSetupChange(this);
         }
 
         protected virtual void Update()
@@ -266,7 +277,7 @@ namespace VRTK
         {
             GameObject modelController = VRTK_DeviceFinder.GetModelAliasController(interactTouch.gameObject);
             //If no attach point has been specified then just use the tip of the controller
-            if (modelController != null && controllerAttachPoint == null)
+            if (modelController != null && originalControllerAttachPoint == null)
             {
                 //attempt to find the attach point on the controller
                 Transform defaultAttachPoint = modelController.transform.Find(VRTK_SDK_Bridge.GetControllerElementPath(SDK_BaseController.ControllerElements.AttachPoint, VRTK_DeviceFinder.GetControllerHand(interactTouch.gameObject)));

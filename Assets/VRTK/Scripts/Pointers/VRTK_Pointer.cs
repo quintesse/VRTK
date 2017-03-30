@@ -79,7 +79,6 @@ namespace VRTK
         /// </summary>
         public event ControllerInteractionEventHandler SelectionButtonReleased;
 
-
         protected VRTK_ControllerEvents.ButtonAlias subscribedActivationButton = VRTK_ControllerEvents.ButtonAlias.Undefined;
         protected VRTK_ControllerEvents.ButtonAlias subscribedSelectionButton = VRTK_ControllerEvents.ButtonAlias.Undefined;
         protected bool currentSelectOnPress;
@@ -95,6 +94,7 @@ namespace VRTK
         protected bool canClickOnHover;
         protected bool activationButtonPressed;
         protected bool selectionButtonPressed;
+        protected Transform originalCustomOrigin;
 
         public virtual void OnActivationButtonPressed(ControllerInteractionEventArgs e)
         {
@@ -239,11 +239,17 @@ namespace VRTK
             }
         }
 
+        protected virtual void Awake()
+        {
+            VRTK_SDKManager.instance.AddBehaviourToToggleOnLoadedSetupChange(this);
+            originalCustomOrigin = customOrigin;
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();
             VRTK_PlayerObject.SetPlayerObject(gameObject, VRTK_PlayerObject.ObjectTypes.Pointer);
-            customOrigin = (customOrigin == null ? VRTK_SDK_Bridge.GenerateControllerPointerOrigin(gameObject) : customOrigin);
+            customOrigin = (originalCustomOrigin == null ? VRTK_SDK_Bridge.GenerateControllerPointerOrigin(gameObject) : originalCustomOrigin);
             SetupController();
             SetupRenderer();
             activateDelayTimer = 0f;
@@ -261,6 +267,7 @@ namespace VRTK
             {
                 Toggle(true);
             }
+            FindController();
         }
 
         protected override void OnDisable()
@@ -270,9 +277,9 @@ namespace VRTK
             UnsubscribeSelectionButton();
         }
 
-        protected virtual void Start()
+        protected virtual void OnDestroy()
         {
-            FindController();
+            VRTK_SDKManager.instance.RemoveBehaviourToToggleOnLoadedSetupChange(this);
         }
 
         protected virtual void Update()

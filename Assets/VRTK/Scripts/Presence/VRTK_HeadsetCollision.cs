@@ -88,6 +88,11 @@ namespace VRTK
             return headsetColliding;
         }
 
+        protected virtual void Awake()
+        {
+            VRTK_SDKManager.instance.AddBehaviourToToggleOnLoadedSetupChange(this);
+        }
+
         protected virtual void OnEnable()
         {
             VRTK_ObjectCache.registeredHeadsetCollider = this;
@@ -108,6 +113,11 @@ namespace VRTK
                 VRTK_ObjectCache.registeredHeadsetCollider = null;
                 TearDownHeadset();
             }
+        }
+
+        protected virtual void OnDestroy()
+        {
+            VRTK_SDKManager.instance.RemoveBehaviourToToggleOnLoadedSetupChange(this);
         }
 
         protected virtual void Update()

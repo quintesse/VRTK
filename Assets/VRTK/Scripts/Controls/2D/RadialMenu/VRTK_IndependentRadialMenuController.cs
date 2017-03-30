@@ -136,6 +136,7 @@ namespace VRTK
 
         protected override void Awake()
         {
+            VRTK_SDKManager.instance.AddBehaviourToToggleOnLoadedSetupChange(this);
             menu = GetComponent<RadialMenu>();
         }
 
@@ -172,6 +173,11 @@ namespace VRTK
 
                 menu.FireHapticPulse -= AttemptHapticPulse;
             }
+        }
+
+        protected virtual void OnDestroy()
+        {
+            VRTK_SDKManager.instance.RemoveBehaviourToToggleOnLoadedSetupChange(this);
         }
 
         protected virtual void Update()

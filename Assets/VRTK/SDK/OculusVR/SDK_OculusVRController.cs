@@ -150,12 +150,12 @@ namespace VRTK
             {
                 if (cachedLeftController != null && cachedLeftController.index == index)
                 {
-                    return (actual ? sdkManager.actualLeftController : sdkManager.scriptAliasLeftController);
+                    return (actual ? sdkManager.loadedSetup.actualLeftController : sdkManager.scriptAliasLeftController);
                 }
 
                 if (cachedRightController != null && cachedRightController.index == index)
                 {
-                    return (actual ? sdkManager.actualRightController : sdkManager.scriptAliasRightController);
+                    return (actual ? sdkManager.loadedSetup.actualRightController : sdkManager.scriptAliasRightController);
                 }
             }
             return null;
@@ -898,6 +898,11 @@ namespace VRTK
             if (index < uint.MaxValue)
             {
                 var device = GetTrackedObject(GetControllerByIndex(index));
+                if (device == null)
+                {
+                    return;
+                }
+
                 previousControllerRotations[index] = currentControllerRotations[index];
                 currentControllerRotations[index] = device.transform.rotation;
 
@@ -917,14 +922,14 @@ namespace VRTK
             var sdkManager = VRTK_SDKManager.instance;
             if (sdkManager != null)
             {
-                if (cachedLeftController == null && sdkManager.actualLeftController)
+                if (cachedLeftController == null && sdkManager.loadedSetup.actualLeftController)
                 {
-                    cachedLeftController = sdkManager.actualLeftController.GetComponent<VRTK_TrackedController>();
+                    cachedLeftController = sdkManager.loadedSetup.actualLeftController.GetComponent<VRTK_TrackedController>();
                     cachedLeftController.index = 0;
                 }
-                if (cachedRightController == null && sdkManager.actualRightController)
+                if (cachedRightController == null && sdkManager.loadedSetup.actualRightController)
                 {
-                    cachedRightController = sdkManager.actualRightController.GetComponent<VRTK_TrackedController>();
+                    cachedRightController = sdkManager.loadedSetup.actualRightController.GetComponent<VRTK_TrackedController>();
                     cachedRightController.index = 1;
                 }
             }
@@ -1022,7 +1027,7 @@ namespace VRTK
         {
             if (cachedBoundariesSDK == null)
             {
-                cachedBoundariesSDK = (VRTK_SDKManager.instance ? VRTK_SDKManager.instance.GetBoundariesSDK() : CreateInstance<SDK_OculusVRBoundaries>()) as SDK_OculusVRBoundaries;
+                cachedBoundariesSDK = (VRTK_SDKManager.instance ? VRTK_SDKManager.instance.loadedSetup.boundariesSDK : CreateInstance<SDK_OculusVRBoundaries>()) as SDK_OculusVRBoundaries;
             }
 
             return cachedBoundariesSDK;
