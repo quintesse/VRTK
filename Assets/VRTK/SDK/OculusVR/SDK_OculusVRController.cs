@@ -925,12 +925,18 @@ namespace VRTK
                 if (cachedLeftController == null && sdkManager.loadedSetup.actualLeftController)
                 {
                     cachedLeftController = sdkManager.loadedSetup.actualLeftController.GetComponent<VRTK_TrackedController>();
-                    cachedLeftController.index = 0;
+                    if (cachedLeftController != null)
+                    {
+                        cachedLeftController.index = 0;
+                    }
                 }
                 if (cachedRightController == null && sdkManager.loadedSetup.actualRightController)
                 {
                     cachedRightController = sdkManager.loadedSetup.actualRightController.GetComponent<VRTK_TrackedController>();
-                    cachedRightController.index = 1;
+                    if (cachedRightController != null)
+                    {
+                        cachedRightController.index = 1;
+                    }
                 }
             }
         }
