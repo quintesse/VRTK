@@ -414,7 +414,7 @@
              * Used to make sure the warning is actually seen in case the console is automatically cleared
              * because of 'Clear on Play' when playing the scene in the Editor.
              */
-            private const string preferencesKey = "VRTK.Disable";
+            private const string PreferencesKey = "VRTK.SDKSetupGameObjectsDisabler.InfoMessage";
 
             [InitializeOnLoadMethod]
             private static void ListenToPlayModeChanges()
@@ -426,9 +426,21 @@
                         FixOpenAndUnsavedScenes();
                     }
 
-                    if (EditorApplication.isPlaying && EditorPrefs.HasKey(preferencesKey))
+                    if (EditorApplication.isPlaying
+#if UNITY_5_6_OR_NEWER
+                        && SessionState.GetBool(PreferencesKey, false)
+#else
+                        && EditorPrefs.HasKey(PreferencesKey)
+#endif
+                    )
                     {
-                        EditorPrefs.DeleteKey(preferencesKey);
+#if UNITY_5_6_OR_NEWER
+                        SessionState.EraseBool(
+#else
+                        EditorPrefs.DeleteKey(
+#endif
+                            PreferencesKey
+                        );
                     }
                 };
             }
@@ -457,7 +469,14 @@
                             string infoMessage = string.Format("The following game objects have been set inactive to allow for SDK loading and switching using the SDK Setups on them:\n{0}", string.Join(", ", setups.Select(setup => setup.name).ToArray()));
                             if (EditorApplication.isPlayingOrWillChangePlaymode)
                             {
-                                EditorPrefs.SetString(preferencesKey, infoMessage);
+#if UNITY_5_6_OR_NEWER
+                                SessionState.SetString(
+#else
+                                EditorPrefs.SetString(
+#endif
+                                    PreferencesKey,
+                                    infoMessage
+                                );
                             }
                             else
                             {
