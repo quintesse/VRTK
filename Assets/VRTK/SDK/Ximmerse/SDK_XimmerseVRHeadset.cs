@@ -79,10 +79,10 @@ namespace VRTK
             cachedHeadset = GetSDKManagerHeadset();
             if (cachedHeadset == null)
             {
-                var foundCamera = VRTK_SharedMethods.FindEvenInactiveComponent<TrackedHead>();
-                if (foundCamera)
+                var foundHeadset = VRTK_SharedMethods.FindEvenInactiveGameObject<VRContext>("TrackingSpace/CenterEyeAnchor");
+                if (foundHeadset)
                 {
-                    cachedHeadset = foundCamera.transform;
+                    cachedHeadset = foundHeadset.transform;
                 }
             }
             return cachedHeadset;

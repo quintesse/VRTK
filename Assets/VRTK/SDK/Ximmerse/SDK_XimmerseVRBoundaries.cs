@@ -3,6 +3,7 @@ namespace VRTK
 {
 #if VRTK_DEFINE_SDK_XIMMERSEVR
     using UnityEngine;
+    using Ximmerse.VR;
 #endif
 
     /// <summary>
@@ -34,7 +35,12 @@ namespace VRTK
             cachedPlayArea = GetSDKManagerPlayArea();
             if (cachedPlayArea == null)
             {
-                cachedPlayArea = Ximmerse.VR.VRContext.main.transform;
+                VRContext vrContext = VRTK_SharedMethods.FindEvenInactiveComponent<VRContext>();
+                if (Application.isPlaying)
+                {
+                    vrContext.InitVRContext();
+                }
+                cachedPlayArea = vrContext.transform;
             }
             return cachedPlayArea;
         }
